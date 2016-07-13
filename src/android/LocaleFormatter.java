@@ -52,9 +52,58 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 public class LocaleFormatter extends CordovaPlugin {
 
-    private static final String LOG_TAG = "LocaleFormatter";
+    @Override
+    public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
+        
+            
+            try{
+                
+                if (action.equals("formatCurrency")) {
+                
+                    if(args.length() < 3){
+                        callbackContext.error("Expected 3 arguments.");
+                        return false;
+                    }
 
+                    String ilocale = args.getString(0);
+                    long amount = args.getLong(1);
+                    boolean debug = args.getBoolean(2);
+                    Locale locale = new Locale("en","US");
+                    if(ilocale != null && ilocale.length() <= 5){
+                        if(ilocale.indexOf('-') > 0){
+                            String[] parts = ilocale.split("-");
+                            locale = new Locale(parts[0],parts[1]);
+                        }
+                    }
+
+                    NumberFormat formatter = NumberFormat.getCurrencyInstance(locale);
+                    String moneyString = formatter.format(amount);
+
+                    if(debug){
+                        System.out.println("Called with locale: " + ilocale + " & amount: " + amount + ". Formatted string is: " + moneyString);    
+                    }
+
+                    callbackContext.success(moneyString);
+
+                    return true;
+                    
+                }else{
+                    callbackContext.error("Unsupported operation");
+                    return false;
+                }
+                
+            }catch(Exception ex){
+                callbackContext.error("Something went wrong: " + ex.getMessage());
+                return false;
+            }
+            
+        
+        
+    }
 
 }
