@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin
+    xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    id="com.rasrin.locale.formatter"
+    version="0.1.1">
+
+  <name>Locale Formatter</name>
+  <description>Format a given number as currency in current locale</description>
+  <author>Rajit Srinivas</author>
+
+  <repo>https://github.com/freerasrin/locale-formatter.git</repo>
+
+  <license>MIT</license>
+  <keywords>cordova,phonegap,ios,android,locale,formatter,currency</keywords>
+
+  <js-module src="www/formatter.js" name="LocaleFormatter">
+    <clobbers target="LocaleFormatter" />
+  </js-module>
+
+  <!-- android -->
+  <platform name="android">
+    <config-file target="res/xml/config.xml" parent="/*">
+      <feature name="LocaleFormatter">
+        <param name="android-package" value="com.rasrin.locale.formatter.plugin"/>
+      </feature>
+    </config-file>
+
+    <source-file src="src/android/LocaleFormatter.java" target-dir="src/com/rasrin/locale/formatter/plugin" />
+  </platform>
+
+  <!-- ios -->
+  <platform name="ios">
+    <config-file target="config.xml" parent="/*">
+      <feature name="LocaleFormatter">
+        <param name="ios-package" value="LocaleFormatter"/>
+      </feature>
+    </config-file>
+
+    <header-file src="src/ios/LocaleFormatter.h" />
+    <source-file src="src/ios/LocaleFormatter.m" />
+
+  </platform>
+
+</plugin>
